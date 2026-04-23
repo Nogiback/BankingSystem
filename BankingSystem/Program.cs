@@ -1,3 +1,6 @@
+// Name: Peter Do
+// Student Number: 9086580
+
 using BankingSystem.Data;
 using BankingSystem.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews(); // For MVC
 builder.Services.AddControllers(); // For API
+
+// Add Swagger services
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Configure DbContext with SQLite
 builder.Services.AddDbContext<BankingDbContext>(options =>
@@ -22,6 +29,11 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
+} 
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

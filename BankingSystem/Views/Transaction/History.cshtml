@@ -1,0 +1,63 @@
+<!-- 
+Name: Peter Do 
+Student Number: 9086580
+-->
+
+@model IEnumerable<BankingSystem.Models.Transaction>
+@{
+  ViewData["Title"] = "Transaction History";
+  var account = ViewBag.Account as BankingSystem.Models.Account;
+  decimal runningBalance = account?.Balance ?? 0m;
+}
+
+<h2>Transaction History</h2>
+@if (account != null)
+{
+  <h4>Account: @account.AccountNumber</h4>
+}
+
+<table class="table table-bordered table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Type</th>
+      <th>Amount</th>
+      <th>Description</th>
+      <th>Balance After</th>
+    </tr>
+  </thead>
+  <tbody>
+    @if (!Model.Any())
+    {
+      <tr>
+        <td colspan="5" class="text-center">No transactions found.</td>
+      </tr>
+    }
+    else
+    {
+      var currentBalance = runningBalance;
+      foreach (var t in Model)
+      {
+        <tr>
+          <td>@t.TransactionDate.ToString("g")</td>
+          <td>@t.TransactionType</td>
+          <td>@t.Amount.ToString("C")</td>
+          <td>@t.Description</td>
+          <td>@currentBalance.ToString("C")</td>
+        </tr>
+                
+        if (t.TransactionType == BankingSystem.Models.TransactionType.Deposit)
+        {
+          currentBalance -= t.Amount;
+        }
+        else
+        {
+          currentBalance += t.Amount;
+        }
+      }
+    }
+  </tbody>
+</table>
+
+<a asp-controller="Account" asp-action="Details" asp-route-id="@account?.AccountId"
+   class="btn btn-outline-secondary">Back to Account Details</a>

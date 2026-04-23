@@ -1,8 +1,14 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿<!-- 
+Name: Peter Do
+Student Number: 9086580
+-->
+
+@{
+    ViewData["Title"] = "Welcome";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to the Banking System</h1>
+    <p>Manage your accounts, perform deposits, and process withdrawals.</p>
+    <a asp-controller="Account" asp-action="Index" class="btn btn-primary mt-3">View Accounts</a>
 </div>

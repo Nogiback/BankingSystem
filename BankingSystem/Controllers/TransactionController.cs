@@ -1,6 +1,7 @@
 // Name: Peter Do
 // Student Number: 9086580
 
+using System;
 using BankingSystem.Models;
 using BankingSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,6 @@ public class TransactionController : Controller
         _repository = repository;
     }
 
-    // GET: /Transaction/Deposit/{accountId}
     [HttpGet]
     public IActionResult Deposit(int accountId)
     {
@@ -27,13 +27,17 @@ public class TransactionController : Controller
         return View(new Transaction { AccountId = accountId, TransactionType = TransactionType.Deposit });
     }
 
-    // POST: /Transaction/Deposit
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Deposit(Transaction model)
     {
         var account = _repository.GetAccountById(model.AccountId);
         if (account == null) return NotFound();
+
+        // Remove validation for fields that are populated automatically in the controller
+        ModelState.Remove("Account");
+        ModelState.Remove("TransactionType");
+        ModelState.Remove("TransactionDate");
 
         if (model.Amount <= 0)
         {
@@ -59,7 +63,6 @@ public class TransactionController : Controller
         return View(model);
     }
 
-    // GET: /Transaction/Withdraw/{accountId}
     [HttpGet]
     public IActionResult Withdraw(int accountId)
     {
@@ -70,13 +73,17 @@ public class TransactionController : Controller
         return View(new Transaction { AccountId = accountId, TransactionType = TransactionType.Withdrawal });
     }
 
-    // POST: /Transaction/Withdraw
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Withdraw(Transaction model)
     {
         var account = _repository.GetAccountById(model.AccountId);
         if (account == null) return NotFound();
+
+        // Remove validation for fields that are populated automatically in the controller
+        ModelState.Remove("Account");
+        ModelState.Remove("TransactionType");
+        ModelState.Remove("TransactionDate");
 
         if (model.Amount <= 0)
         {
@@ -106,7 +113,6 @@ public class TransactionController : Controller
         return View(model);
     }
 
-    // GET: /Transaction/History/{accountId}
     [HttpGet]
     public IActionResult History(int accountId)
     {
